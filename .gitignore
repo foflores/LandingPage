@@ -3,6 +3,10 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+# Hugo
+public/
+.hugo_build.lock
+
 # dotenv files
 .env
 

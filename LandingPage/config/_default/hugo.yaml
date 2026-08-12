@@ -1,0 +1,8 @@
+baseURL: http://localhost:1313/
+locale: en-us
+title: Favian Flores
+theme: celadon
+
+params:
+  homepage:
+    sections: [hero]

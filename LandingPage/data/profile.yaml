@@ -1,0 +1,11 @@
+name: Favian Flores
+title: Software Engineer
+summary: >
+  I create web and desktop applications using the .NET platform.
+profile_image: /author-favian.webp
+profile_layout: classic # Options: "modern" or "classic"
+profile_image_style: rectangle # Options: "circle" or "rectangle"
+keyword_sections:
+  - title: Stack
+    rows:
+      - [C#, .NET Core, .NET Framework, ASP.NET, WPF, SQL Server, AWS]
