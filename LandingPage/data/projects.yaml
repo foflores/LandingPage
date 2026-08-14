@@ -1,0 +1,17 @@
+items:
+  - title: Blazor Tetris
+    summary: A tetris game built using Blazor.
+    image: /tetris-icon.webp
+    links:
+      - label: Website
+        url: https://blazortetris.favianflores.com
+      - label: Code
+        url: https://www.github.com/foflores/BlazorTetris
+  - title: Hugo Blog
+    summary: A static blog built using Hugo and Hugo-PaperMod
+    image: /hugo-icon.webp
+    links:
+      - label: Website
+        url: https://hugoblog.favianflores.com
+      - label: Code
+        url: https://www.github.com/foflores/HugoBlog

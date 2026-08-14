@@ -5,4 +5,8 @@ theme: celadon
 
 params:
   homepage:
-    sections: [hero]
+    sections: [hero, projects]
+    projects:
+      enable: true
+      title: Projects
+      layout: cards

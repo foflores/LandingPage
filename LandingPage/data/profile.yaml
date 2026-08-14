@@ -1,11 +1,19 @@
 name: Favian Flores
 title: Software Engineer
-summary: >
-  I create web and desktop applications using the .NET platform.
-profile_image: /author-favian.webp
+summary: I design fast, maintainable web and desktop applications using the .NET platform.
+profile_image: /profile-image.webp
 profile_layout: classic # Options: "modern" or "classic"
 profile_image_style: rectangle # Options: "circle" or "rectangle"
 keyword_sections:
   - title: Stack
     rows:
       - [C#, .NET Core, .NET Framework, ASP.NET, WPF, SQL Server, AWS]
+links:
+  - label: Resume
+    url: /resume.pdf
+  - label: Github
+    url: https://github.com/foflores
+  - label: LinkedIn
+    url: https://www.linkedin.com/in/foflores
+  - label: Substack
+    url: https://favianflores.substack.com/
