@@ -19,7 +19,5 @@ items:
     summary: A blogging platform built using Django
     image: /django-logo.webp
     links:
-      - label: Website
-        url: https://djangoblog.favianflores.com
       - label: Code
         url: https://www.github.com/foflores/DjangoBlog
