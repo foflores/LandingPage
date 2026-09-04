@@ -1,1 +1,3 @@
-<Solution />
+<Solution>
+  <Project Path="LandingPage.Infrastructure/LandingPage.Infrastructure.csproj" />
+</Solution>

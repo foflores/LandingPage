@@ -1,0 +1,7 @@
+config:
+  pulumi:disable-default-providers: ["*"]
+  hugoblog:domain: www.dev.favianflores.com
+  hugoblog:viewer-request-function-file: Functions/ViewerRequest.js
+  hugoblog:aws-account-id: 888359517863
+  hugoblog:aws-iac-role-arn: arn:aws:iam::888359517863:role/infra-prod-role-iac-c6853b2
+  hugoblog:aws-zone-id: Z07197692ZFYMERJXU0UP
