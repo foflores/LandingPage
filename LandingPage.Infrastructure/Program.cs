@@ -196,7 +196,7 @@ return await Deployment.RunAsync(() =>
 
     var record = new Record($"{prefix}-record", new RecordArgs
     {
-        Name = "hugoblog",
+        Name = "www",
         Ttl = 300,
         Type = "CNAME",
         Records = [ distribution.DomainName ],
