@@ -1,0 +1,68 @@
+name: Deploy App
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Target Environment
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  deploy-app:
+    name: Deploy App
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env }}
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: 0.164.0
+          extended: true
+
+      - name: Install Nerdbank.GitVersioning
+        uses: dotnet/nbgv@v0.5.2
+        id: nbgv
+        with:
+          setAllVars: true
+
+      - name: Install Pulumi
+        uses: pulumi/actions@v7
+        id: pulumi
+        with:
+          command: output
+          stack-name: foflores/landingpage/${{ github.event.inputs.env }}
+          work-dir: ./LandingPage.Infrastructure
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+      - name: Build
+        env:
+          HUGOxPARAMSxFOOTERxTEXT: Version ${{ steps.nbgv.outputs.AssemblyInformationalVersion }}
+        run: hugo --environment ${{ github.event.inputs.env }}
+        working-directory: ./LandingPage
+
+      - name: Deploy
+        run: aws s3 sync --delete ./public s3://${{ steps.pulumi.outputs.bucket-name }}
+        working-directory: ./LandingPage
+
+      - name: Invalidate CDN
+        run: aws cloudfront create-invalidation --distribution-id ${{ steps.pulumi.outputs.distribution-id }} --paths "/*"
+        working-directory: ./LandingPage

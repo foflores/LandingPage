@@ -1,0 +1,41 @@
+name: Deploy Infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      env:
+        description: Target Environment
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
+jobs:
+  deploy-infra:
+    name: Deploy Infra
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.env }}
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Run pulumi update
+        uses: pulumi/actions@v7
+        with:
+          command: update
+          stack-name: foflores/landingpage/${{ github.event.inputs.env }}
+          work-dir: ./LandingPage.Infrastructure
+          comment-on-summary: true
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
