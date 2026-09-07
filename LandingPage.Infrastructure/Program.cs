@@ -219,7 +219,6 @@ return await Deployment.RunAsync(() =>
             }
         },
         Name = "",
-        Ttl = 300,
         Type = RecordType.A,
         ZoneId = awsZoneId
     }, new CustomResourceOptions { Provider = provider, DeleteBeforeReplace = true });
