@@ -198,7 +198,7 @@ return await Deployment.RunAsync(() =>
         }, new InvokeOptions{ Provider = provider}).Apply(x => x.Json)
     }, new CustomResourceOptions { Provider = provider });
 
-    var record = new Record($"{prefix}-record", new RecordArgs
+    var record = new Record($"{prefix}-record-01", new RecordArgs
     {
         Name = "www",
         Ttl = 300,
