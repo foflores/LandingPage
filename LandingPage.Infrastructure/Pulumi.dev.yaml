@@ -1,6 +1,7 @@
 config:
   pulumi:disable-default-providers: ["*"]
   landingpage:domain: www.dev.favianflores.com
+  landingpage:alternate-domain: dev.favianflores.com
   landingpage:viewer-request-function-file: Functions/ViewerRequest.js
   landingpage:aws-account-id: 888359517863
   landingpage:aws-iac-role-arn: arn:aws:iam::888359517863:role/infra-prod-role-iac-c6853b2

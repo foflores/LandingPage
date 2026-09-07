@@ -11,6 +11,7 @@ using Pulumi.Aws.Iam;
 using Pulumi.Aws.Iam.Inputs;
 using Pulumi.Aws.Inputs;
 using Pulumi.Aws.Route53;
+using Pulumi.Aws.Route53.Inputs;
 using Pulumi.Aws.S3;
 using Config = Pulumi.Config;
 
@@ -20,12 +21,14 @@ return await Deployment.RunAsync(() =>
 {
     var config = new Config();
 
-    var prefix = $"{Deployment.Instance.ProjectName}-{Deployment.Instance.StackName}";
     var domain = config.Require("domain");
+    var alternateDomain = config.Require("alternate-domain");
     var viewerRequestFunctionFile = config.Require("viewer-request-function-file");
     var awsAccountId = config.Require("aws-account-id");
     var awsIacRoleArn = config.Require("aws-iac-role-arn");
     var awsZoneId = config.Require("aws-zone-id");
+
+    var prefix = $"{Deployment.Instance.ProjectName}-{Deployment.Instance.StackName}";
 
     var provider = new Provider($"{prefix}-provider", new ProviderArgs
     {
@@ -42,6 +45,7 @@ return await Deployment.RunAsync(() =>
     var certificate = new Certificate($"{prefix}-certicate", new CertificateArgs
     {
         DomainName = domain,
+        SubjectAlternativeNames = [ alternateDomain ],
         ValidationMethod = "DNS"
     }, new CustomResourceOptions { Provider = provider });
 
@@ -101,7 +105,7 @@ return await Deployment.RunAsync(() =>
 
     var distribution = new Distribution($"{prefix}-distribution", new DistributionArgs
     {
-        Aliases = [ domain ],
+        Aliases = [ domain, alternateDomain ],
         CustomErrorResponses =
         [
             new DistributionCustomErrorResponseArgs
@@ -198,10 +202,27 @@ return await Deployment.RunAsync(() =>
     {
         Name = "www",
         Ttl = 300,
-        Type = "CNAME",
+        Type = RecordType.CNAME,
         Records = [ distribution.DomainName ],
         ZoneId = awsZoneId
-    }, new CustomResourceOptions { Provider = provider });
+    }, new CustomResourceOptions { Provider = provider, DeleteBeforeReplace = true });
+
+    var aRecord = new Record($"{prefix}-record-02", new RecordArgs
+    {
+        Aliases = new[]
+        {
+            new RecordAliasArgs
+            {
+                EvaluateTargetHealth = false,
+                Name = distribution.DomainName,
+                ZoneId = distribution.HostedZoneId,
+            }
+        },
+        Name = "",
+        Ttl = 300,
+        Type = RecordType.A,
+        ZoneId = awsZoneId
+    }, new CustomResourceOptions { Provider = provider, DeleteBeforeReplace = true });
 
     return new Dictionary<string, object?>
     {
