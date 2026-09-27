@@ -1,0 +1,7 @@
+<a href="{{ .Destination | safeURL }}"
+   {{- with .Title }} title="{{ . }}"{{ end -}}
+   style="color: var(--color-primary);"
+>
+	{{- with .Text }}{{ . }}{{ end -}}
+</a>
+{{- /* chomp trailing newline */ -}}
